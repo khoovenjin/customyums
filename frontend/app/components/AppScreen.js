@@ -3,6 +3,8 @@ import { SafeAreaView, StyleSheet, View } from 'react-native';
 
 import Constants from 'expo-constants';
 
+import defaultStyles from '../config/styles';
+
 function AppScreen({
     children, 
     style
@@ -18,6 +20,7 @@ function AppScreen({
 
 const styles = StyleSheet.create({
     screen: {
+        backgroundColor: defaultStyles.colors.primary,
         flex: 1,
         paddingTop: Constants.statusBarHeight
     },

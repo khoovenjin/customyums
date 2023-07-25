@@ -5,7 +5,8 @@ import AppText from './AppText';
 import defaultStyles from '../config/styles';
 
 function AppButton({
-    color = "white",
+    color = "primary",
+    backgroundColor = "white",
     onPress,
     style,
     textStyle,
@@ -14,8 +15,12 @@ function AppButton({
 }, ref) {
     return (
         <TouchableWithoutFeedback onPress={ onPress }>
-            <View style={[ styles.container, style, { backgroundColor: defaultStyles.colors[color] }]} ref={ ref }>
-                <AppText style={[ styles.text, textStyle ]} {...otherProps}>
+            <View style={[
+                styles.container,
+                style,
+                { borderColor: defaultStyles.colors[ color ], backgroundColor: defaultStyles.colors[ backgroundColor ] }
+            ]} ref={ ref }>
+                <AppText style={[ styles.text, { color: defaultStyles.colors[ color ] }, textStyle ]} {...otherProps}>
                     { title }
                 </AppText>
             </View>
@@ -27,7 +32,7 @@ const styles = StyleSheet.create({
     container: {
         alignItems: "center",
         backgroundColor: defaultStyles.colors.white,
-        borderColor: defaultStyles.colors.pink,
+        borderColor: defaultStyles.colors.primary,
         borderWidth: 2,
         justifyContent: "center",
         padding: 10

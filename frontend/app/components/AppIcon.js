@@ -7,7 +7,7 @@ import defaultStyles from '../config/styles';
 
 function AppIcon({
     backgroundColor = defaultStyles.colors.white,
-    color = defaultStyles.colors.black,
+    color = defaultStyles.colors.primary,
     containerStyle,
     name,
     onPress,

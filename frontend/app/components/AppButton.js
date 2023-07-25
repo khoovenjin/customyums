@@ -8,7 +8,7 @@ function AppButton({
     color = "primary",
     backgroundColor = "white",
     onPress,
-    style,
+    containerStyle,
     textStyle,
     title,
     ...otherProps
@@ -17,7 +17,7 @@ function AppButton({
         <TouchableWithoutFeedback onPress={ onPress }>
             <View style={[
                 styles.container,
-                style,
+                containerStyle,
                 { borderColor: defaultStyles.colors[ color ], backgroundColor: defaultStyles.colors[ backgroundColor ] }
             ]} ref={ ref }>
                 <AppText style={[ styles.text, { color: defaultStyles.colors[ color ] }, textStyle ]} {...otherProps}>

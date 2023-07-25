@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 
 import AppText from './AppText';
+import defaultStyles from '../config/styles';
 
 function AppListItem({
   PrescriptComponent,
@@ -10,9 +11,9 @@ function AppListItem({
   detailsContainerStyle,
   onPress,
   textStyle,
+  textContainerStyle,
   title,
   titleStyle,
-  titleContainerStyle,
   subTitle,
   subTitleStyle,
   PostscriptComponent,
@@ -25,7 +26,7 @@ function AppListItem({
           { PrescriptComponent }
         </View> }
         <View style={[ styles.detailsContainer, detailsContainerStyle ]}>
-          <View style={[ styles.titleContainer, titleContainerStyle ]}>
+          <View style={[ styles.textContainer, textContainerStyle ]}>
             <AppText style={[ styles.text, textStyle, titleStyle ]}>{ title }</AppText>
             { subTitle && <AppText numberOfLines={3} style={{ ...styles.text, ...textStyle, ...subTitleStyle }}>
               { subTitle }
@@ -42,7 +43,7 @@ function AppListItem({
 
 const styles = StyleSheet.create({
   prescriptStyle: {
-    marginRight: 20
+    marginRight: 10
   },
   container: {
     alignItems: 'center',
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row'
   },
-  titleContainer: {
+  textContainer: {
     flex: 1,
     marginRight: 10
   },

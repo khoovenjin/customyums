@@ -5,8 +5,8 @@ import AppText from './AppText';
 import defaultStyles from '../config/styles';
 
 function AppTag({
-  color = defaultStyles.colors.white,
-  textColor = defaultStyles.colors.black,
+  color = defaultStyles.colors.secondary,
+  textColor = defaultStyles.colors.white,
   title
 }) {
   return (

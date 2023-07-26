@@ -215,3 +215,37 @@ export const sampleIngredients = [
     amount: "175"
   }
 ]
+
+export const mealTypes = [
+  "Breakfast",
+  "Lunch",
+  "Tea Time",
+  "Dinner",
+  "Supper"
+]
+
+export const nutrientComposition = [
+  {
+    label: "Calories",
+    amount: "247 kcal"
+  },
+  {
+    label: "Fat",
+    amount: "9.6 g"
+  },
+  {
+    label: "Carbo",
+    amount: "33.5 g"
+  },
+  {
+    label: "Protein",
+    amount: "6.8 g"
+  }
+]
+
+export const sampleSteps = [
+  "Make the yeasted dough.",
+  "Roll out the dough and punch out the doughnuts.",
+  "Fry the doughnuts.",
+  "Glaze the doughnuts."
+]

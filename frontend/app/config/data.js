@@ -227,19 +227,19 @@ export const mealTypes = [
 export const nutrientComposition = [
   {
     label: "Calories",
-    amount: "247 kcal"
+    amount: 247
   },
   {
     label: "Fat",
-    amount: "9.6 g"
+    amount: 9.6
   },
   {
     label: "Carbo",
-    amount: "33.5 g"
+    amount: 33.5
   },
   {
     label: "Protein",
-    amount: "6.8 g"
+    amount: 6.8
   }
 ]
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 
 import AppText from './AppText';
 import defaultStyles from '../config/styles';
@@ -9,17 +9,20 @@ function AppDate({
   day,
   dayStyle,
   date,
-  dateStyle
+  dateStyle,
+  onPress
 }) {
   return (
-    <View style={[ styles.container, container ]}>
-      <AppText style={[ defaultStyles.text, styles.text, styles.day, dayStyle ]}>
-        { day }
-      </AppText>
-      <AppText style={[ defaultStyles.text, styles.text, styles.date, dateStyle ]}>
-        { date }
-      </AppText>
-    </View>
+    <TouchableWithoutFeedback onPress={ onPress }>
+      <View style={[ styles.container, container ]}>
+        <AppText style={[ defaultStyles.text, styles.text, styles.day, dayStyle ]}>
+          { day }
+        </AppText>
+        <AppText style={[ defaultStyles.text, styles.text, styles.date, dateStyle ]}>
+          { date }
+        </AppText>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

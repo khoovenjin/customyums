@@ -12,14 +12,15 @@ const AnimatedText = Animated.createAnimatedComponent( TextInput );
 function AppCircularProgress({
   color = defaultStyles.colors.primary_brown,
   progressColor = defaultStyles.colors.primary_grey,
-  compositionPercentage,
+  compositionValue,
+  compositionMax,
   delay = 2000,
   radius = 50,
   strokeOpacity = 0.3,
-  strokeWidth = 10
+  strokeWidth = 10,
+  title
 }) {
-  const maxPercentage = 100;
-  const compositionRatio = compositionPercentage / maxPercentage;
+  const compositionRatio = compositionValue / compositionMax;
   const circumference = radius * ( 2 * Math.PI );
   const halfCircle = radius + strokeWidth;
   const diameter = halfCircle * 2;
@@ -35,7 +36,7 @@ function AppCircularProgress({
   }), [ progress.value ])
 
   const textAnimatedProps = useAnimatedProps(() => ({
-    text: `${ ( progress.value * 100 ).toFixed( 0 ) }%`
+    text: `${ ( progress.value * compositionMax ).toFixed( 0 ) }g \n${ title }`
   }), [ progress.value ])
 
   return (
@@ -73,9 +74,11 @@ function AppCircularProgress({
         </G>
       </Svg>
       <AnimatedText
+        numberOfLines={ 2 }
+        multiline={ true }
         animatedProps={ textAnimatedProps }
         editable={ false }
-        defaultValue='0%'
+        defaultValue='0'
         style={[ StyleSheet.absoluteFillObject, defaultStyles.text, styles.text, { color: progressColor } ]}
       />
     </View>
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: defaultStyles.colors.transparent,
   },
   text: {
-    fontSize: 28,
+    fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center'
   }

@@ -4,8 +4,9 @@ import { dbTables } from "../config/config.js";
 
 const PantrySchema = new mongoose.Schema({
   pantry_id: mongoose.Schema.Types.ObjectId,
+  user_id: mongoose.Schema.Types.ObjectId,
   name: String,
-  amount: mongoose.Schema.Types.Decimal128
+  amount: Number
 }, {
   versionKey: false
 })

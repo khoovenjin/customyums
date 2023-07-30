@@ -33,19 +33,16 @@ export default class DietaryDAO {
     }
   ];
 
-  static #findOneAndUpdateProjection = [
-    {
-      returnOriginal: false
-    },
-    {
-      projection: {
-        pantry_id: "$_id",
-        user_id: 1,
-        name: 1,
-        amount: 1
-      }
+  static #findOneAndUpdateProjection = {
+    returnOriginal: false,
+    projection: {
+      dietary_id: "$_id",
+      user_id: 1,
+      meal: 1,
+      date: 1,
+      recipes: 1
     }
-  ]
+  };
 
   static getDietaries = async () => {
     let result = new Array();
@@ -161,7 +158,7 @@ export default class DietaryDAO {
                           .get()
 
     try {
-      result = await Dietary.findOneAndUpdate( ...query, ...this.#findOneAndUpdateProjection );
+      result = await Dietary.findOneAndUpdate( ...query, this.#findOneAndUpdateProjection );
     } catch (error) {
       console.log(`Unable to issue find command, ${error}`)
     }
@@ -184,7 +181,7 @@ export default class DietaryDAO {
                           .get()
 
     try {
-      result = await Dietary.findOneAndUpdate( ...query, ...this.#findOneAndUpdateProjection );
+      result = await Dietary.findOneAndUpdate( ...query, this.#findOneAndUpdateProjection );
     } catch (error) {
       console.log(`Unable to issue find command, ${error}`)
     }

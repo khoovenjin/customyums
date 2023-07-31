@@ -9,19 +9,25 @@ import {
   userRouter
 } from './routes/index.js';
 import GraphQLServer from "./graphql/graphql.js";
+import Cache from "./cache/controllers/cacheController.js";
+import redis from "./cache/redis.js";
 import * as Controllers from "./controllers/index.js";
 import { payloadChecker } from "./middleware/payloadChecker.js";
+import { serviceWorkerGraphQL } from "./cache/services/swGraphql.js";
 
 export default class Server {
   constructor() {
     this.app = express();
     this.httpServer = http.createServer( this.app );
     this.graphQLServer = GraphQLServer( this.httpServer );
+    this.cache = new Cache( redis );
   }
 
   getExpress = () => this.app;
   getHttpServer = () => this.httpServer;
   getGraphQLServer = () => this.graphQLServer;
+  getCache = () => this.cache;
+  setCache = ( cache ) => this.cache = cache;
 
   parseReq = ( id ) => {
     return {
@@ -49,10 +55,12 @@ export default class Server {
       '/graphql',
       expressMiddleware( this.graphQLServer, {
         context: async ({ req, res }) => ({
+          cache: this.cache,
           controllers: Controllers,
           middleware: {
             utils: payloadChecker
           },
+          serviceWorker: serviceWorkerGraphQL
         })   
       })
     );

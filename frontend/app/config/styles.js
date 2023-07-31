@@ -20,5 +20,8 @@ export default {
     innerRadius: 75,
     labelRadius: 1.65,
     radius: Dimensions.get("window").width * 0.32
+  },
+  screenOptions: {
+    headerShown: false
   }
 }

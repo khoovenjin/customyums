@@ -56,6 +56,7 @@ export default class UserController {
     const userDoc = req.body;
 
     utilsController.setDate( userDoc );
+    utilsController.hashPassword( userDoc );
     
     try{
       result = await UserDAO.addUser( userDoc ).then( ({ _doc }) => {

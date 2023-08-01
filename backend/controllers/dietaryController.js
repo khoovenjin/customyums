@@ -136,7 +136,7 @@ export default class DietaryController {
         '_id',
         dietary_id
       ).then( async res => {
-        let response = res;
+        let response;
 
         if( !res?.recipes?.length )
           response = await DietaryDAO.deleteDietary( dietary_id );

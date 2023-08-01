@@ -3,6 +3,11 @@ import mongoose from "mongoose";
 import { payloadChecker } from "../middleware/payloadChecker.js";
 
 export default class dbQuery{
+  static #data_types = {
+    id: ( variable ) => this.toObjectId( variable ),
+    date: ( variable ) => this.toDate( variable )
+  }
+
   static createPipeline = ( pipeline ) => {
     if( payloadChecker.typeChecker( false, pipeline.data, 'null' ) )
       throw new Error('Invalid pipeline data-type. Recommend to call initPipeline().')
@@ -30,8 +35,12 @@ export default class dbQuery{
       for( const [ key, value ] of Object.entries( hashMap ) ) {
         let propsValue = value;
 
-        if( key in attrFormatObj )
-          propsValue = attrFormatObj[ key ] === 'id'? this.toObjectId( value ) : this.toDate( value )
+        if( key in attrFormatObj ) {
+          if( attrFormatObj[ key ] in this.#data_types )
+            propsValue = this.#data_types[ attrFormatObj[ key ] ]( value );
+          else
+            propsValue = value;
+        }
         
         matchQuery[ key ] = propsValue;
       }

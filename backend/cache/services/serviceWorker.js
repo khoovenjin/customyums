@@ -1,7 +1,7 @@
 import { payloadChecker } from "../../middleware/payloadChecker.js";
 import parser from "../parser/utils.js";
 
-export class serviceWorkerGraphQL {
+export class ServiceWorker {
   static #bufferTime = 500 // 500ms
 
   // Check CacheMiss

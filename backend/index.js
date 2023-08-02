@@ -6,14 +6,15 @@ import { expressMiddleware } from '@apollo/server/express4';
 import {
   dietaryRouter,
   pantryRouter,
-  userRouter
+  userRouter,
+  recipeRouter
 } from './routes/index.js';
 import GraphQLServer from "./graphql/graphql.js";
 import Cache from "./cache/controllers/cacheController.js";
 import redis from "./cache/redis.js";
 import * as Controllers from "./controllers/index.js";
 import { payloadChecker } from "./middleware/payloadChecker.js";
-import { serviceWorkerGraphQL } from "./cache/services/swGraphql.js";
+import { ServiceWorker } from "./cache/services/serviceWorker.js";
 
 export default class Server {
   constructor() {
@@ -44,7 +45,8 @@ export default class Server {
     this.app.use("/api/v1", dietaryRouter);
     this.app.use("/api/v1", pantryRouter);
     this.app.use("/api/v1", userRouter);
-  
+    this.app.use("/api/v1", recipeRouter);
+
     try {
       await this.graphQLServer.start();
     } catch (error) {
@@ -60,7 +62,7 @@ export default class Server {
           middleware: {
             utils: payloadChecker
           },
-          serviceWorker: serviceWorkerGraphQL
+          serviceWorker: ServiceWorker
         })   
       })
     );

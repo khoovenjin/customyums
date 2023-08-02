@@ -6,7 +6,8 @@ export default class keyParser {
   static #collection = Object.freeze({
     user: 'user',
     pantry: 'pantry',
-    dietary: 'dietary'
+    dietary: 'dietary',
+    recipe: 'recipe'
   });
 
   static createKey = ( key ) => {

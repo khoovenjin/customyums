@@ -96,4 +96,13 @@ export default class Cache {
                                                                               .then( async () => await this.#type_commands.utilities.expire( keyParser.initKey( 'dietary' ).add( id ).get(), duration ));
   deleteDietaries = async () => await this.#type_commands.utilities.delete( keyParser.initKey( 'dietary' ).get() );
   deleteDietary = async ( id ) => await this.#type_commands.utilities.delete( parser.parseArrayKey( 'dietary', id ) );
+
+  // Recipe
+  fetchRecipes = async () => await this.#type_commands.string.get( keyParser.initKey( 'recipe' ).get() ).then( result => parser.deserialize( result ) );
+  fetchRecipe = async ( id ) => await this.#type_commands.hash.get( keyParser.initKey( 'recipe' ).add( id ).get() );
+  storeRecipes = async ( recipe ) => await this.#type_commands.string.set( keyParser.initKey( 'recipe' ).get(), parser.serialize( recipe ) );
+  storeRecipe = async ( id, recipe ) => await this.#type_commands.hash.set( keyParser.initKey( 'recipe' ).add( id ).get(), recipe );
+  storeRecipesExpire = async ( recipe, duration = this.#expireTime ) => await this.#type_commands.utilities.setExpire( keyParser.initKey( 'recipe' ).get(), parser.serialize( recipe ), duration );
+  storeRecipeExpire = async ( id, recipe, duration = this.#expireTime ) => await this.#type_commands.hash.set( keyParser.initKey( 'recipe' ).add( id ).get(), recipe )
+                                                                              .then( async () => await this.#type_commands.utilities.expire( keyParser.initKey( 'recipe' ).add( id ).get(), duration ));
 }

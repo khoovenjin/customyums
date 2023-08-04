@@ -7,7 +7,8 @@ const DietarySchema = new mongoose.Schema({
   user_id: mongoose.Schema.Types.ObjectId,
   meal: String,
   date: Date,
-  recipes: [ String ]
+  recipes: [ String ],
+  isCompleted: mongoose.Schema.Types.Boolean
 }, {
   versionKey: false
 })

@@ -62,6 +62,10 @@ export class payloadChecker {
       recipes: {
         isRequired: true,
         type: 'array'
+      },
+      isCompleted: {
+        isRequired: false,
+        type: 'boolean'
       }
     },
     recipe: {

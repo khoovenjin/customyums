@@ -33,6 +33,7 @@ export const typeDefs = `#graphql
     meal: String!
     recipes: [Int!]!
     date: Date!
+    isCompleted: Boolean!
     user: User!
   }
 
@@ -59,6 +60,7 @@ export const typeDefs = `#graphql
     meal: String!
     date: Date!
     recipes: [Int!]!
+    isCompleted: Boolean
   }
 
   input PantryInput {

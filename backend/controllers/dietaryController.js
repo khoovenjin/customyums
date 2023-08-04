@@ -1,12 +1,25 @@
 import DietaryDAO from '../dao/dietaryDAO.js';
+
 import { payloadChecker } from '../middleware/payloadChecker.js';
+import utilsController from './utils.js';
 
 export default class DietaryController {
   static apiGetDietaries = async ( req, res ) => {
     let result = [];
+    let queries = {
+      user_id: req.query.user_id,
+      gt: req.query.gt,
+      gte: req.query.gte,
+      lt: req.query.lt,
+      lte: req.query.lte
+    };
+
+    for( const subQuery in queries )
+      if( payloadChecker.typeChecker( false, queries[ subQuery ], 'null' ) )
+        delete queries[ subQuery ]
 
     try{
-      result = await DietaryDAO.getDietaries();
+      result = await DietaryDAO.getDietaries( queries );
     } catch (error) {
       console.log('Unable to execute apiGetDietaries: ', error);
     }
@@ -26,10 +39,14 @@ export default class DietaryController {
   static apiGetDietariesById = async ( req, res ) => {
     let dietary_id = req.params.id;
 
+    let queries =  {};
     let result = [];
 
+    for( const subQuery in req.query )
+      queries[ subQuery ] = req.query[ subQuery ];
+
     try{
-        result = await DietaryDAO.getDietariesById( dietary_id );
+        result = await DietaryDAO.getDietariesById( dietary_id, queries );
     } catch (error) {
         console.log('Unable to execute apiGetDietariesById: ', error);
     }
@@ -50,6 +67,8 @@ export default class DietaryController {
     let result = new Object();
     
     const dietaryDoc = req.body;
+
+    utilsController.setCompleted( dietaryDoc );
 
     const matchKeyPair = {
       "user_id": dietaryDoc?.user_id,

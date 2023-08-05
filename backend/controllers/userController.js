@@ -8,9 +8,17 @@ import utilsController from "./utils.js";
 export default class UserController {
   static apiGetUsers = async ( req, res ) => {
     let result = [];
+    let queries = {
+      skip: req.query.skip,
+      limit: req.query.limit
+    };
+
+    for( const subQuery in queries )
+      if( payloadChecker.typeChecker( false, queries[ subQuery ], 'null' ) )
+        delete queries[ subQuery ]
 
     try{
-      result = await UserDAO.getUsers();
+      result = await UserDAO.getUsers( queries );
     } catch (error) {
       console.log('Unable to execute apiGetUsers: ', error);
     }
@@ -33,9 +41,9 @@ export default class UserController {
     let result = [];
 
     try{
-        result = await UserDAO.getUsersById( user_id );
+      result = await UserDAO.getUsersById( user_id );
     } catch (error) {
-        console.log('Unable to execute apiGetUsersById: ', error);
+      console.log('Unable to execute apiGetUsersById: ', error);
     }
 
     if( req && res ){

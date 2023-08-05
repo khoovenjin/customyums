@@ -13,6 +13,7 @@ export default class DietaryController {
       lt: req.query.lt,
       lte: req.query.lte,
       isCompleted: req.query.isCompleted,
+      nearest: req.query.nearest,
       skip: req.query.skip,
       limit: req.query.limit
     };

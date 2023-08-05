@@ -14,7 +14,7 @@ export default class DietaryDAO {
       }
     },
     {
-        $unwind: "$user"
+      $unwind: "$user"
     },
     {
       $project: {
@@ -30,6 +30,11 @@ export default class DietaryDAO {
           password: "$user.password",
           createdAt: "$user.createdAt"
         }
+      }
+    },
+    {
+      $sort: {
+        date: 1
       }
     }
   ];
@@ -48,45 +53,13 @@ export default class DietaryDAO {
 
   static getDietaries = async ( queries ) => {
     let result = new Array();
-    let pipeline = new Array();
-
-    if( Object.keys( queries ).length ) {
-      let aux_pipeline = {
-        $match: {
-          $and: []
-        }
-      };
-
-      let date_pipeline = {
-        date: {}
-      }
-
-      for( const property in queries ) {
-        if( property === 'user_id' ) {
-          let temp_pipeline = {
-            user_id: {
-              $eq: new mongoose.Types.ObjectId( queries.user_id )
-            }
-          };
-  
-          aux_pipeline.$match.$and.push( temp_pipeline );
-          continue;
-        }
-
-        date_pipeline.date[ `$${ property }` ] = new Date( queries[ property ] );
-      }
-
-      if( Object.keys( date_pipeline.date ).length )
-        aux_pipeline.$match.$and.push( date_pipeline );
-
-      if( aux_pipeline.$match.$and.length )
-        pipeline.push( aux_pipeline );
-    }
-
-    pipeline.push( ...this.#query_pipeline );
+    const query = dbQuery
+                  .initPipeline()
+                  .query( queries, this.#query_pipeline )
+                  .get()
 
     try {
-      result = await Dietary.aggregate( pipeline );
+      result = await Dietary.aggregate( query );
     } catch (error) {
       console.log(`Unable to issue find command, ${error}`)
     }

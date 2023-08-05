@@ -11,7 +11,10 @@ export default class DietaryController {
       gt: req.query.gt,
       gte: req.query.gte,
       lt: req.query.lt,
-      lte: req.query.lte
+      lte: req.query.lte,
+      isCompleted: req.query.isCompleted,
+      skip: req.query.skip,
+      limit: req.query.limit
     };
 
     for( const subQuery in queries )
@@ -38,17 +41,12 @@ export default class DietaryController {
 
   static apiGetDietariesById = async ( req, res ) => {
     let dietary_id = req.params.id;
-
-    let queries =  {};
     let result = [];
 
-    for( const subQuery in req.query )
-      queries[ subQuery ] = req.query[ subQuery ];
-
     try{
-        result = await DietaryDAO.getDietariesById( dietary_id, queries );
+      result = await DietaryDAO.getDietariesById( dietary_id );
     } catch (error) {
-        console.log('Unable to execute apiGetDietariesById: ', error);
+      console.log('Unable to execute apiGetDietariesById: ', error);
     }
 
     if( req && res ){

@@ -1,20 +1,22 @@
 import PantryDAO from '../dao/pantryDAO.js';
 
+import { payloadChecker } from '../middleware/payloadChecker.js';
+
 export default class PantryController {
   static apiGetPantries = async ( req, res ) => {
-    let result = [
-      {
-        $project: {
-          _id: 0,
-          pantry_id: "$_id",
-          name: 1,
-          amount: 1
-        }
-      }
-    ];
+    let result = [];
+    let queries = {
+      user_id: req.query.user_id,
+      skip: req.query.skip,
+      limit: req.query.limit
+    };
+
+    for( const subQuery in queries )
+      if( payloadChecker.typeChecker( false, queries[ subQuery ], 'null' ) )
+        delete queries[ subQuery ]
 
     try{
-      result = await PantryDAO.getPantries();
+      result = await PantryDAO.getPantries( queries );
     } catch (error) {
       console.log('Unable to execute apiGetPantries: ', error);
     }
@@ -37,9 +39,9 @@ export default class PantryController {
     let result = [];
 
     try{
-        result = await PantryDAO.getPantriesById( pantry_id );
+      result = await PantryDAO.getPantriesById( pantry_id );
     } catch (error) {
-        console.log('Unable to execute apiGetPantriesById: ', error);
+      console.log('Unable to execute apiGetPantriesById: ', error);
     }
 
     if( req && res ){

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 import User from '../models/userModel.js';
+import dbQuery from "../query/pipeline.js";
 
 export default class UserDAO {
   static #query_pipeline = [
@@ -57,13 +58,15 @@ export default class UserDAO {
     }
   ];
 
-  static getUsers = async () => {
+  static getUsers = async ( queries ) => {
     let result = new Array();
-
-    const pipeline = this.#query_pipeline;
+    const query = dbQuery
+                  .initPipeline()
+                  .query( queries, this.#query_pipeline )
+                  .get()
 
     try {
-      result = await User.aggregate( pipeline );
+      result = await User.aggregate( query );
     } catch (error) {
       console.log(`Unable to issue find command, ${error}`)
     }
@@ -131,9 +134,6 @@ export default class UserDAO {
     let result;
         
     try {
-      // Delete all related entities: Pantry{ user_id } & Dietary{ user_id }
-      
-
       result = await User.findByIdAndDelete( id );
     } catch (error) {
       console.log(`Unable to issue find command, ${error}`)

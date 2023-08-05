@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 import Pantry from '../models/pantryModel.js';
+import dbQuery from "../query/pipeline.js";
 
 export default class PantryDAO {
   static #query_pipeline = [
@@ -13,7 +14,7 @@ export default class PantryDAO {
       }
     },
     {
-        $unwind: "$user"
+      $unwind: "$user"
     },
     {
       $project: {
@@ -31,13 +32,15 @@ export default class PantryDAO {
     }
   ];
 
-  static getPantries = async () => {
+  static getPantries = async ( queries ) => {
     let result = new Array();
-
-    const pipeline = this.#query_pipeline;
+    const query = dbQuery
+                  .initPipeline()
+                  .query( queries, this.#query_pipeline )
+                  .get()
 
     try {
-      result = await Pantry.aggregate( pipeline );
+      result = await Pantry.aggregate( query );
     } catch (error) {
       console.log(`Unable to issue find command, ${error}`)
     }

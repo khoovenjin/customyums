@@ -39,6 +39,40 @@ export default class DietaryDAO {
     }
   ];
 
+  static #nearest_pipeline = [
+    {
+			$group: {
+				_id: "$date",
+				docs: {
+					$push: "$$ROOT"
+        }
+			}
+		},
+  	{
+			$limit: 1
+		},
+  	{
+			$unwind: "$docs"
+		},
+	  {
+			$project: {
+        _id: "$docs._id",
+				meal: "$docs.meal",
+        date: "$docs.date",
+				recipes: "$docs.recipes",
+				isCompleted: "$docs.isCompleted",
+        user: {
+					user_id: "$docs.user.user_id",
+					name: "$docs.user.name",
+					username: "$docs.user.username",
+					password: "$docs.user.password",
+					createdAt: "$docs.user.createdAt",
+				},
+				dietary_id: "$docs.dietary_id"
+			}
+		}
+  ]
+
   static #findOneAndUpdateProjection = {
     returnOriginal: false,
     projection: {
@@ -53,9 +87,16 @@ export default class DietaryDAO {
 
   static getDietaries = async ( queries ) => {
     let result = new Array();
+    let pipeline = this.#query_pipeline;
+
+    if( 'nearest' in queries && queries?.nearest == 'true' )
+      pipeline.push( ...this.#nearest_pipeline );
+
+    delete queries.nearest;
+
     const query = dbQuery
                   .initPipeline()
-                  .query( queries, this.#query_pipeline )
+                  .query( queries, pipeline )
                   .get()
 
     try {

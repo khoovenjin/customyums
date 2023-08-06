@@ -4,11 +4,11 @@ export const typeDefs = `#graphql
 
   # Query Type (All GET Req)
   type Query {
-    dietaries: [Dietary!]!
+    dietaries( query: DietaryQuery ): [Dietary!]!
     dietary( id: ID! ): Dietary
-    pantries: [Pantry!]!
+    pantries( query: PantryQuery ): [Pantry!]!
     pantry( id: ID! ): Pantry
-    users: [User!]!
+    users( query: UserQuery ): [User!]!
     user( id: ID! ): User
   }
 
@@ -54,7 +54,7 @@ export const typeDefs = `#graphql
     pantries: [Pantry!]!
   }
   
-  # Custom Inputs (Header & Query)
+  # Custom Inputs (Header & Body)
   input DietaryInput {
     user_id: ID!
     meal: String!
@@ -78,5 +78,29 @@ export const typeDefs = `#graphql
 
   input RecipeInput {
     recipes: Int!
+  }
+
+  # Custom Inputs (Query)
+  input PantryQuery {
+    user_id: ID
+    skip: Int
+    limit: Int
+  }
+
+  input UserQuery {
+    skip: Int
+    limit: Int
+  }
+
+  input DietaryQuery {
+    user_id: ID,
+    gt: Date,
+    gte: Date,
+    lt: Date,
+    lte: Date,
+    isCompleted: Boolean,
+    nearest: Boolean,
+    skip: Int,
+    limit: Int
   }
 `

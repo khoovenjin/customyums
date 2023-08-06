@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 const GET_DIETARIES = gql`
-  query getDietaries {
-    dietaries {
+  query getDietaries( $query: DietaryQuery ) {
+    dietaries( query: $query ) {
       dietary_id
       meal
       recipes
@@ -23,8 +23,8 @@ const GET_DIETARIES_BY_ID = gql`
 `;
 
 const ADD_DIETARY = gql`
-  mutation addDietary( $input: DietaryInput! ){
-    addDietary( input: $input ){
+  mutation addDietary( $input: DietaryInput! ) {
+    addDietary( input: $input ) {
       dietary_id
       meal
       recipes
@@ -34,7 +34,7 @@ const ADD_DIETARY = gql`
 `;
 
 const DELETE_DIETARY = gql`
-  mutation deleteDietary( $deleteDietaryId: ID!, $input: RecipeInput! ){
+  mutation deleteDietary( $deleteDietaryId: ID!, $input: RecipeInput! ) {
     deleteDietary( id: $deleteDietaryId, input: $input )
   }
 `

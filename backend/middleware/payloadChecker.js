@@ -76,6 +76,71 @@ export class payloadChecker {
     }
   };
 
+  static query_schema = {
+    user: {
+      skip: {
+        isRequired: false,
+        type: 'integer'
+      },
+      limit: {
+        isRequired: false,
+        type: 'integer'
+      }
+    },
+    pantry: {
+      user_id: {
+        isRequired: false,
+        type: 'id'
+      },
+      skip: {
+        isRequired: false,
+        type: 'integer'
+      },
+      limit: {
+        isRequired: false,
+        type: 'integer'
+      }
+    },
+    dietary: {
+      user_id: {
+        isRequired: false,
+        type: 'id'
+      },
+      gt: {
+        isRequired: false,
+        type: 'dateFormat'
+      },
+      gte: {
+        isRequired: false,
+        type: 'dateFormat'
+      },
+      lt: {
+        isRequired: false,
+        type: 'dateFormat'
+      },
+      lte: {
+        isRequired: false,
+        type: 'dateFormat'
+      },
+      isCompleted: {
+        isRequired: false,
+        type: 'boolean'
+      },
+      nearest: {
+        isRequired: false,
+        type: 'boolean'
+      },
+      skip: {
+        isRequired: false,
+        type: 'integer'
+      },
+      limit: {
+        isRequired: false,
+        type: 'integer'
+      }
+    }
+  }
+
   static typeChecker = (
     isInverse = false,
     variable,

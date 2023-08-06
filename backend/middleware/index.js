@@ -142,6 +142,45 @@ class graphQL {
     }
   })
 
+  static validateReqQuery = ( entity ) => this.createResolver(( parent, args, context ) => {
+    if( 'query' in args && Object.keys( args.query ).length ) {
+      const querySchemaEntries = Object.entries( payloadChecker.query_schema[ entity ] );
+      const querySchemaKeys = Object.keys( payloadChecker.query_schema[ entity ] );
+      const queryKeys = Object.keys( args.query );
+  
+      // Check for Invalid properties
+      for( const key of queryKeys )
+        if( !querySchemaKeys.includes( key ))
+          this.customGraphQLError(
+            `The query of '${ key }' is invalid.`,
+            'BAD_USER_INPUT',
+            400,
+            payloadChecker.httpStatusCode[400]
+          )
+              
+      for( const [ key, value ] of querySchemaEntries ) {
+        // Check for Required properties
+        if( value.isRequired && !queryKeys.includes( key ) )
+          this.customGraphQLError(
+            `The request query requires a '${ key }' property.`,
+            'BAD_USER_INPUT',
+            400,
+            payloadChecker.httpStatusCode[400]
+          )
+  
+        // Check for data-type
+        if( key in args.query && payloadChecker.typeChecker( true, args.query[ key ], value.type )) {
+          this.customGraphQLError(
+            `The data type of '${ key }' query is incorrect.`,
+            'BAD_USER_INPUT',
+            400,
+            payloadChecker.httpStatusCode[400]
+          )
+        }
+      }
+    }
+  })
+
   static resolveQueryError = ( error ) => {
     if( error.extensions?.code === 'GRAPHQL_VALIDATION_FAILED' ) {
       return {

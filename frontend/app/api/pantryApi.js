@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 const GET_PANTRIES = gql`
-  query getPantries {
-    pantries {
+  query getPantries( $query: PantryQuery ) {
+    pantries( query: $query ) {
       pantry_id
       name
       amount
@@ -21,7 +21,7 @@ const GET_PANTRIES_BY_ID = gql`
 `;
 
 const ADD_PANTRY = gql`
-  mutation addPantry( $input: PantryInput! ){
+  mutation addPantry( $input: PantryInput! ) {
     addPantry( input: $input ) {
       pantry_id
       name
@@ -31,7 +31,7 @@ const ADD_PANTRY = gql`
 `;
 
 const DELETE_PANTRY = gql`
-  mutation deletePantry( $deletePantryId: ID! ){
+  mutation deletePantry( $deletePantryId: ID! ) {
     deletePantry( id: $deletePantryId )
   }
 `

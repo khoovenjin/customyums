@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 const GET_USERS = gql`
-  query getUsers {
-    users{
+  query getUsers( $query: UserQuery ) {
+    users( query: $query ) {
       user_id
       username
       password
@@ -13,7 +13,7 @@ const GET_USERS = gql`
 
 const GET_USERS_BY_ID = gql`
   query getUserById( $userId: ID! ) {
-    user( id: $userId ){
+    user( id: $userId ) {
       user_id
       username
       password
@@ -23,8 +23,8 @@ const GET_USERS_BY_ID = gql`
 `;
 
 const ADD_USER = gql`
-  mutation addUser( $input: UserInput! ){
-    addUser( input: $input ){
+  mutation addUser( $input: UserInput! ) {
+    addUser( input: $input ) {
       user_id
       name
       username
@@ -35,7 +35,7 @@ const ADD_USER = gql`
 `;
 
 const DELETE_USER = gql`
-  mutation deleteUser( $deleteUserId: ID! ){
+  mutation deleteUser( $deleteUserId: ID! ) {
     deleteUser( id: $deleteUserId )
   }
 `

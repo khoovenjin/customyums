@@ -89,7 +89,7 @@ export default class DietaryDAO {
     let result = new Array();
     let pipeline = this.#query_pipeline;
 
-    if( 'nearest' in queries && queries?.nearest == 'true' )
+    if( 'nearest' in queries && ( queries?.nearest === 'true' || queries?.nearest === true ) )
       pipeline.push( ...this.#nearest_pipeline );
 
     delete queries.nearest;

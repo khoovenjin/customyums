@@ -31,7 +31,7 @@ export const typeDefs = `#graphql
   type Dietary {
     dietary_id: ID!
     meal: String!
-    recipes: [Int!]!
+    recipes: [Recipe!]!
     date: Date!
     isCompleted: Boolean!
     user: User!
@@ -52,6 +52,14 @@ export const typeDefs = `#graphql
     createdAt: Date!
     dietaries: [Dietary!]!
     pantries: [Pantry!]!
+  }
+
+  type Recipe {
+    recipe_id: String!,
+    title: String!,
+    description: String!,
+    image: String!,
+    tags: [String!]!
   }
   
   # Custom Inputs (Header & Body)

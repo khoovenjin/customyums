@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+import RecipeSchema from "./recipeModel.js";
 import { dbTables } from "../config/config.js";
 
 const DietarySchema = new mongoose.Schema({
@@ -7,7 +8,7 @@ const DietarySchema = new mongoose.Schema({
   user_id: mongoose.Schema.Types.ObjectId,
   meal: String,
   date: Date,
-  recipes: [ String ],
+  recipes: [ RecipeSchema ],
   isCompleted: mongoose.Schema.Types.Boolean
 }, {
   versionKey: false

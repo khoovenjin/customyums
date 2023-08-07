@@ -87,7 +87,7 @@ export default class DietaryDAO {
 
   static getDietaries = async ( queries ) => {
     let result = new Array();
-    let pipeline = this.#query_pipeline;
+    let pipeline = structuredClone( this.#query_pipeline );
 
     if( 'nearest' in queries && ( queries?.nearest === 'true' || queries?.nearest === true ) )
       pipeline.push( ...this.#nearest_pipeline );

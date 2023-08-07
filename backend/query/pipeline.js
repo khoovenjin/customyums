@@ -136,11 +136,13 @@ export default class dbQuery{
       return this.createPipeline( parentPipeline );
     }
 
-    // To remove element from array in collection's attribute
+    // To remove element from array in collection's attribute { Specific for Recipe }
     parentPipeline.pull = ( attribute, value, isObjectId = false ) => {
       const pullQuery = {
         $pull: {
-          [ attribute ]: isObjectId? this.toObjectId( value ): value
+          [ attribute ]: {
+            'recipe_id': isObjectId? this.toObjectId( value ): value
+          }
         }
       }
 

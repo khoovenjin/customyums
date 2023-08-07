@@ -62,6 +62,7 @@ export default class DietaryController {
     return result;
   }
 
+  // TODO: Type Checking on dietaryDoc.recipes
   static apiAddDietary = async ( req, res ) => {
     let result = new Object();
     

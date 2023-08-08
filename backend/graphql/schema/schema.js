@@ -55,11 +55,25 @@ export const typeDefs = `#graphql
   }
 
   type Recipe {
-    recipe_id: String!,
-    title: String!,
-    description: String!,
-    image: String!,
+    recipe_id: String!
+    title: String!
+    description: String!
+    image: String!
     tags: [String!]!
+    time: Int!
+    nutrition: [Nutrition!]!
+    ingredients: [Ingredient!]!
+    steps: [String!]!
+  }
+
+  type Nutrition {
+    title: String!
+    amount: Float!
+  }
+
+  type Ingredient {
+    title: String!
+    amount: Float!
   }
   
   # Custom Inputs (Header & Body)

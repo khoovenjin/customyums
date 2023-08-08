@@ -22,7 +22,7 @@ export const typeDefs = `#graphql
     updatePantry( id: ID!, input: PantryInput! ): Boolean!
     updateUser( id: ID!, input: UserInput! ): Boolean!
 
-    deleteDietary( id: ID!, input: RecipeInput! ): Boolean!
+    deleteDietary( id: ID!, input: DeleteRecipeInput! ): Boolean!
     deletePantry( id: ID! ): Boolean!
     deleteUser( id: ID! ): Boolean!
   }
@@ -81,7 +81,7 @@ export const typeDefs = `#graphql
     user_id: ID!
     meal: String!
     date: Date!
-    recipes: [Int!]!
+    recipes: [RecipeInput!]!
     isCompleted: Boolean
   }
 
@@ -99,6 +99,28 @@ export const typeDefs = `#graphql
   }
 
   input RecipeInput {
+    recipe_id: String!
+    title: String!
+    description: String!
+    image: String!
+    tags: [String!]!
+    time: Int!
+    nutrition: [NutritionInput!]!
+    ingredients: [IngredientInput!]!
+    steps: [String!]!
+  }
+
+  input NutritionInput {
+    title: String!
+    amount: Float!
+  }
+
+  input IngredientInput {
+    title: String!
+    amount: Float!
+  }
+
+  input DeleteRecipeInput {
     recipes: Int!
   }
 

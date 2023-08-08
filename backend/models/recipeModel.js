@@ -4,6 +4,7 @@ import NutritionSchema from "./nutritionModel.js";
 import IngredientSchema from "./ingredientModel.js";
 
 const RecipeSchema = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
   recipe_id: String,
   title: String,
   description: String,

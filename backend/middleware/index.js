@@ -13,8 +13,10 @@ class restAPI {
   }
 
   static validateReqPayload = ( entity ) => ( req, res, next ) => {
-    const schemaEntries = Object.entries( payloadChecker.schema[ entity ] );
-    const schemaKeys = Object.keys( payloadChecker.schema[ entity ] );
+    const entitySchema = entity in payloadChecker.external_schema?
+      payloadChecker.external_schema[ entity ] : payloadChecker.schema[ entity ];
+    const schemaEntries = Object.entries( entitySchema );
+    const schemaKeys = Object.keys( entitySchema );
     const payloadKeys = Object.keys( req.body );
 
     // Check for NULL payload
@@ -34,6 +36,31 @@ class restAPI {
       // Check for data-type
       if( key in req.body && payloadChecker.typeChecker( true, req.body[ key ], value.type ))
         return res.status( 400 ).send({ error: `The data type of '${ key }' property is incorrect.` })
+    }
+
+    next();
+  }
+
+  static validateReqQuery = ( entity ) => ( req, res, next ) => {
+    const entitySchema = entity in payloadChecker.external_schema?
+      payloadChecker.external_schema[ entity ] : payloadChecker.schema[ entity ];
+    const schemaEntries = Object.entries( entitySchema );
+    const schemaKeys = Object.keys( entitySchema );
+    const queryKeys = Object.keys( req.query );
+
+    // Check for Invalid properties
+    for( const key of queryKeys )
+      if( !schemaKeys.includes( key ))
+        return res.status( 400 ).send({ error: `The query of '${ key }' is invalid.` })
+    
+    for( const [ key, value ] of schemaEntries ) {
+      // Check for Required properties
+      if( value.isRequired && !queryKeys.includes( key ) )
+        return res.status( 400 ).send({ error: `The request query requires a '${ key }' property.` })
+      
+      // Check for data-type
+      if( key in req.body && payloadChecker.typeChecker( true, req.body[ key ], value.type ))
+        return res.status( 400 ).send({ error: `The data type of '${ key }' query is incorrect.` })
     }
 
     next();

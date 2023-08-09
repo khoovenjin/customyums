@@ -1,7 +1,7 @@
 import { payloadChecker } from "../../middleware/payloadChecker.js";
 
 export default class keyParser {
-  static #seperator = new String(':');
+  static #separator = new String(':');
 
   static #collection = Object.freeze({
     user: 'user',
@@ -22,7 +22,7 @@ export default class keyParser {
     // To concatenate a new index
     parentKey.add = ( childKey ) => {
       const newKey = {
-        data: String( parentKey.data ).concat( this.#seperator ).concat( childKey )
+        data: String( parentKey.data ).concat( this.#separator ).concat( childKey )
       };
       
       return this.createKey( newKey );

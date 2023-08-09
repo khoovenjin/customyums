@@ -48,6 +48,11 @@ export default class DietaryDAO {
         }
 			}
 		},
+    {
+      $sort: {
+        _id: 1
+      }
+    },
   	{
 			$limit: 1
 		},

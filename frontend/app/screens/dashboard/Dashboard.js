@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
 
 import AppScreen from '../../components/AppScreen';
@@ -11,9 +11,25 @@ import defaultStyles from '../../config/styles';
 
 import { sampleUpcomingMeals } from '../../config/data';
 
+import { useQuery } from '@apollo/client';
+import dietaryApi from '../../api/dietaryApi';
+import Utils from '../../../utilities/utils';
+
 function Dashboard() {
   const searchRef = useRef();
 
+  const currentDate = Utils.dateToString( Date.now() );
+  console.log( 'current Date: ', currentDate );
+  const { loading, error, data } = useQuery( dietaryApi.GET_DIETARIES, {
+    variables: {
+      query: {
+        isCompleted: false,
+        gte: currentDate,
+        nearest: true
+      }
+    }
+  })
+  
   return (
     <AppScreen>
       <View style={ styles.header } >
@@ -26,28 +42,28 @@ function Dashboard() {
             ref={ searchRef }
           />
           <AppText style={[ defaultStyles.text, styles.title ]}>Upcoming Meals</AppText>
-          <FlatList
-            data={ sampleUpcomingMeals.at( 0 ).meals }
+          { data && <FlatList
+            data={ data?.dietaries }
             keyExtractor={( item, index ) => index.toString()}
             renderItem={({ item }) => {
-              if( item?.recipe?.length )
+              if( item?.recipes?.length )
                 return (
                   <View>
                     <AppText
                       style={[ defaultStyles.text, styles.subTitle ]}
                     >
-                      { item?.type }
+                      { item?.meal }
                     </AppText>
                     <FlatList
-                      data={ item?.recipe }
+                      data={ item?.recipes }
                       keyExtractor={( item, index ) => index.toString()}
                       renderItem={({ item }) => (
                         <AppCard
-                          image={ item?.image }
-                          title={ item?.title }
-                          description={ item?.description }
+                          image={{ uri: item.image }}
+                          title={ item.title }
+                          description={ item.description }
                           tags={ item.tags }
-                          onPress={() => console.log("View More")}
+                          onPress={() => console.log('Press')}
                           renderRightActions={() => (
                             <AppDeleteSwipe onPress={() => console.log("delete")}/>
                           )}
@@ -63,9 +79,9 @@ function Dashboard() {
             ItemSeparatorComponent={() => (
               <View style={ styles.seperator }/> 
             )}
-          />
+          /> }
 
-          <AppText style={[ defaultStyles.text, styles.title ]}>New Recipes</AppText>
+          <AppText style={[ defaultStyles.text, styles.title ]}>Pantry Recipes</AppText>
           <FlatList
             data={ sampleUpcomingMeals?.at(0)?.meals?.at(1)?.recipe }
             keyExtractor={( item, index ) => index.toString()}
@@ -83,7 +99,7 @@ function Dashboard() {
             )}
           />
 
-          <AppText style={[ defaultStyles.text, styles.title ]}>Pantry Recipes</AppText>
+          <AppText style={[ defaultStyles.text, styles.title ]}>Featured Recipes</AppText>
           <FlatList
             data={ sampleUpcomingMeals?.at(0)?.meals?.at(0)?.recipe }
             keyExtractor={( item, index ) => index.toString()}

@@ -59,4 +59,26 @@ export default class RecipeController {
 
     res.json( response );
   }
+
+  static apiGetRecipeByIngredients = async ( req, res ) => {
+    const ingredients = req.body.ingredients;
+    let number = 1;
+    if( req.query.number )
+      number = parseInt( req.query.number );
+
+    let result = new Object();
+
+    try {
+      result = await RecipeClient.fetchRecipeByIngredients( ingredients, number );
+    } catch( error ){
+      console.log(`Unable to execute fetchRecipeByIngredients`);
+    }
+
+    let response = {
+      success: true,
+      data: result
+    }
+
+    res.json( response );
+  }
 }

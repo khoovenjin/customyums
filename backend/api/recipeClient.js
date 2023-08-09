@@ -1,6 +1,8 @@
 import axios from 'axios';
 import dotenv from "dotenv";
 
+import { payloadChecker } from '../middleware/payloadChecker.js';
+
 dotenv.config();
 
 export default class RecipeClient {
@@ -61,6 +63,25 @@ export default class RecipeClient {
       result = await this.fetch( URL ).then( res => res.data );
     } catch( error ) {
       console.log(`Unable to execute fetchRecipeById_Instruction`);
+    }
+
+    return result;
+  }
+
+  static fetchRecipeByIngredients = async ( ingredients = [], noOfResults = 5 ) => {
+    if( payloadChecker.typeChecker( true, ingredients, 'array' ) || ingredients.length === 0 )
+      return new Object();
+
+    const separator = ',';
+    const listOfIngredients = ingredients.join( separator );
+
+    const URL = `${ process.env.RECIPE_BASE_URL }/findByIngredients?${ this.getApiKey() }&ingredients=${ listOfIngredients }&number=${ noOfResults }`;
+    let result = new Object();
+
+    try {
+      result = await this.fetch( URL ).then( res => res.data );
+    } catch( error ) {
+      console.log(`Unable to execute fetchRecipeByIngredients`);
     }
 
     return result;

@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const NutritionSchema = new mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
   title: String,
-  amount: Number
+  amount: Number,
+  percentageDailyNeed: Number
 }, {
   versionKey: false
 })

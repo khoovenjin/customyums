@@ -5,8 +5,25 @@ const GET_DIETARIES = gql`
     dietaries( query: $query ) {
       dietary_id
       meal
-      recipes
+      recipes {
+        recipe_id
+        title
+        description
+        image
+        tags
+        time
+        nutrition {
+          title
+          amount
+        }
+        ingredients {
+          title
+          amount
+        }
+        steps
+      }
       date
+      isCompleted
     }
   }
 `;
@@ -16,8 +33,25 @@ const GET_DIETARIES_BY_ID = gql`
     dietary( id: $dietaryId ) {
       dietary_id
       meal
-      recipes
+      recipes {
+        recipe_id
+        title
+        description
+        image
+        tags
+        time
+        nutrition {
+          title
+          amount
+        }
+        ingredients {
+          title
+          amount
+        }
+        steps
+      }
       date
+      isCompleted
     }
   }
 `;
@@ -34,10 +68,10 @@ const ADD_DIETARY = gql`
 `;
 
 const DELETE_DIETARY = gql`
-  mutation deleteDietary( $deleteDietaryId: ID!, $input: RecipeInput! ) {
+  mutation deleteDietary( $deleteDietaryId: ID!, $input: DeleteRecipeInput! ) {
     deleteDietary( id: $deleteDietaryId, input: $input )
   }
-`
+`;
 
 export default{
   GET_DIETARIES,

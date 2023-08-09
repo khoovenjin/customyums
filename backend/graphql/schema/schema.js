@@ -69,6 +69,7 @@ export const typeDefs = `#graphql
   type Nutrition {
     title: String!
     amount: Float!
+    percentageDailyNeed: Float!
   }
 
   type Ingredient {
@@ -113,6 +114,7 @@ export const typeDefs = `#graphql
   input NutritionInput {
     title: String!
     amount: Float!
+    percentageDailyNeed: Float!
   }
 
   input IngredientInput {

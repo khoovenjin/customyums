@@ -141,6 +141,29 @@ export class payloadChecker {
     }
   }
 
+  static external_schema = {
+    // apiGetRecipeMatchByKey
+    spoonacular_query_key: {
+      key: {
+        isRequired: true,
+        type: 'string'
+      }
+    },
+    // apiGetRecipeByIngredients
+    spoonacular_body_ingredients: {
+      ingredients: {
+        isRequired: true,
+        type: 'array'
+      }
+    },
+    spoonacular_query_number: {
+      number: {
+        isRequired: false,
+    type: 'string'
+      }
+    }
+  }
+
   static typeChecker = (
     isInverse = false,
     variable,

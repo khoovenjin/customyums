@@ -159,7 +159,7 @@ export class payloadChecker {
     spoonacular_query_number: {
       number: {
         isRequired: false,
-    type: 'string'
+        type: 'integer'
       }
     }
   }

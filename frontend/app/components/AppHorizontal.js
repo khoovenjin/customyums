@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
-function Seperator({ width }) {
+function Separator({ width }) {
   return (
     <View style={{ width }}/>
   );
@@ -10,7 +10,7 @@ function Seperator({ width }) {
 function AppHorizontal({
   containerStyle,
   data,
-  seperatorWidth = 5,
+  separatorWidth = 5,
   renderItem
 }) {
   return (
@@ -19,7 +19,7 @@ function AppHorizontal({
         data={ data }
         keyExtractor={( item, index ) => index.toString()}
         renderItem={ renderItem }
-        ItemSeparatorComponent={ <Seperator width={ seperatorWidth }/> }
+        ItemSeparatorComponent={ <Separator width={ separatorWidth }/> }
         horizontal
         showsHorizontalScrollIndicator={ false }
       />

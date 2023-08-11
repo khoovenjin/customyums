@@ -1,9 +1,10 @@
 import { RECIPE_BASE_URL } from "@env";
 
 import axios from 'axios';
+import Utils from "../../../utilities/utils";
 
 const fetch = async ( url ) => {
-  let result = new Object();
+  let result;
 
   try {
     result = await axios.get( url );
@@ -53,8 +54,23 @@ const GET_RECIPE_INSTRUCTION = async ( id ) => {
   return result;
 }
 
+const GET_RECIPE_MATCH_BY_INGREDIENTS = async ( ingredients = [], number = 5 ) => {
+  const queryIngredients = Utils.arrayToString( ingredients );
+  const URL = `${ RECIPE_BASE_URL }/ingredients?ingredients=${ queryIngredients }&number=${ number }`;
+  let result = new Object();
+
+  try {
+    result = await fetch( URL ).then( res => res.data );
+  } catch( error ) {
+    console.log(`Unable to execute GET_RECIPE_MATCH_BY_INGREDIENTS`);
+  }
+
+  return result;
+}
+
 export default{
   GET_RECIPE_INFORMATION,
   GET_RECIPE_MATCH_BY_KEY,
-  GET_RECIPE_INSTRUCTION
+  GET_RECIPE_INSTRUCTION,
+  GET_RECIPE_MATCH_BY_INGREDIENTS
 }

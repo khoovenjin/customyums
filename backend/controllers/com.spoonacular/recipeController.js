@@ -61,10 +61,8 @@ export default class RecipeController {
   }
 
   static apiGetRecipeByIngredients = async ( req, res ) => {
-    const ingredients = req.body.ingredients;
-    let number = 1;
-    if( req.query.number )
-      number = parseInt( req.query.number );
+    const ingredients = req.query.ingredients;
+    let number = req.query.number? req.query.number : 5;
 
     let result = new Object();
 

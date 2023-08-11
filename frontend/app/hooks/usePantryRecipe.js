@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-
 import { useQuery } from '@apollo/client';
 
 import pantryApi from '../api/pantryApi';

@@ -1,13 +1,4 @@
-import moment from "moment";
-
-export default class Utils {
-  static #dateFormat = 'YYYY-MM-DD';
-
-  static dateToString = ( date ) => moment( date ).format( this.#dateFormat );
-
-  static arrayToString = ( data ) => this.typeChecker( false, data, 'array' )?
-                                        data.join( ',' ) : data;
-  
+export class payloadChecker {
   static typeChecker = (
     isInverse = false,
     variable,

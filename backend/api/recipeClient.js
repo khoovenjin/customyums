@@ -1,8 +1,6 @@
 import axios from 'axios';
 import dotenv from "dotenv";
 
-import { payloadChecker } from '../middleware/payloadChecker.js';
-
 dotenv.config();
 
 export default class RecipeClient {
@@ -68,14 +66,8 @@ export default class RecipeClient {
     return result;
   }
 
-  static fetchRecipeByIngredients = async ( ingredients = [], noOfResults = 5 ) => {
-    if( payloadChecker.typeChecker( true, ingredients, 'array' ) || ingredients.length === 0 )
-      return new Object();
-
-    const separator = ',';
-    const listOfIngredients = ingredients.join( separator );
-
-    const URL = `${ process.env.RECIPE_BASE_URL }/findByIngredients?${ this.getApiKey() }&ingredients=${ listOfIngredients }&number=${ noOfResults }`;
+  static fetchRecipeByIngredients = async ( ingredients, noOfResults = 5 ) => {
+    const URL = `${ process.env.RECIPE_BASE_URL }/findByIngredients?${ this.getApiKey() }&ingredients=${ ingredients }&number=${ noOfResults }`;
     let result = new Object();
 
     try {

@@ -150,13 +150,17 @@ export class payloadChecker {
       }
     },
     // apiGetRecipeByIngredients
-    spoonacular_body_ingredients: {
+    spoonacular_query_ingredients: {
       ingredients: {
         isRequired: true,
-        type: 'array'
+        type: 'string'
+      },
+      number: {
+        isRequired: false,
+        type: 'integer'
       }
     },
-    spoonacular_query_number: {
+    spoonacular_query_random: {
       number: {
         isRequired: false,
         type: 'integer'

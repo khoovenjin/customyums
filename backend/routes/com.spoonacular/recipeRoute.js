@@ -7,35 +7,36 @@ const recipeRouter = express.Router();
 
 recipeRouter.get(
   "/recipe/:id/information",
-  // Middleware
-  middlewareRestAPI.validateReqParamsId,
-  // Controller -> DAO
   RecipeController.apiGetRecipeById_Information
 );
 
 recipeRouter.get(
   "/recipe/autocomplete",
   // Middleware
-  middlewareRestAPI.validateReqPayload( 'spoonacular_query_key' ),
+  middlewareRestAPI.validateReqQuery( 'spoonacular_query_key' ),
   // Controller -> DAO
   RecipeController.apiGetRecipeMatchByKey
 );
 
 recipeRouter.get(
   "/recipe/:id/instruction",
-  // Middleware
-  middlewareRestAPI.validateReqParamsId,
-  // Controller -> DAO
   RecipeController.apiGetRecipeById_Instruction
 );
 
 recipeRouter.get(
   "/recipe/ingredients",
   // Middleware
-  middlewareRestAPI.validateReqPayload( 'spoonacular_body_ingredients' ),
-  middlewareRestAPI.validateReqQuery( 'spoonacular_query_number' ),
+  middlewareRestAPI.validateReqQuery( 'spoonacular_query_ingredients' ),
   // Controller -> DAO
   RecipeController.apiGetRecipeByIngredients
+);
+
+recipeRouter.get(
+  "/recipe/random",
+  // Middleware
+  middlewareRestAPI.validateReqQuery( 'spoonacular_query_random' ),
+  // Controller -> DAO
+  RecipeController.apiGetRandomRecipe
 );
 
 export default recipeRouter;

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import dotenv from "dotenv";
 
+import recipeMapper from '../mapper/com.spoonacular/recipeMapper.js';
+
 dotenv.config();
 
 export default class RecipeClient {
@@ -66,6 +68,8 @@ export default class RecipeClient {
     return result;
   }
 
+  // Reference: https://spoonacular.com/food-api/docs#Search-Recipes-by-Ingredients (For ingredients)
+  // https://api.spoonacular.com/recipes/findByIngredients?ingredients=apples,+flour,+sugar&number=2
   static fetchRecipeByIngredients = async ( ingredients, noOfResults = 5 ) => {
     const URL = `${ process.env.RECIPE_BASE_URL }/findByIngredients?${ this.getApiKey() }&ingredients=${ ingredients }&number=${ noOfResults }`;
     let result = new Object();
@@ -74,6 +78,28 @@ export default class RecipeClient {
       result = await this.fetch( URL ).then( res => res.data );
     } catch( error ) {
       console.log(`Unable to execute fetchRecipeByIngredients`);
+    }
+
+    return result;
+  }
+
+  // Reference: https://spoonacular.com/food-api/docs#Get-Random-Recipes (For random)
+  // https://api.spoonacular.com/recipes/random?number=1&tags=vegetarian,dessert
+  static fetchRandomRecipe = async ( noOfResults = 10 ) => {
+    const URL = `${ process.env.RECIPE_BASE_URL }/random?${ this.getApiKey() }&number=${ noOfResults }`;
+    let result = new Object();
+
+    try {
+      result = await this.fetch( URL )
+        .then( res => recipeMapper.init( res )
+                        .id()
+                        .title()
+                        .description()
+                        .image()
+                        .tags()
+                        .get() );
+    } catch( error ) {
+      console.log(`Unable to execute fetchRandomRecipe`);
     }
 
     return result;

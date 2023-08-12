@@ -79,4 +79,23 @@ export default class RecipeController {
 
     res.json( response );
   }
+
+  static apiGetRandomRecipe = async ( req, res ) => {
+    let number = req.query.number? req.query.number : 10;
+
+    let result = new Object();
+
+    try {
+      result = await RecipeClient.fetchRandomRecipe( number );
+    } catch( error ){
+      console.log(`Unable to execute fetchRandomRecipe`);
+    }
+
+    let response = {
+      success: true,
+      data: result
+    }
+
+    res.json( response );
+  }
 }

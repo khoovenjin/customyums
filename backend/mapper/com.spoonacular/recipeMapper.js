@@ -27,14 +27,23 @@ export default class recipeMapper {
     let parentPipeline = pipeline;
 
     parentPipeline.get = () => {
-      return parentPipeline.data.data.recipes.map( item => {
+      const mapToAttribute = ( item ) => {
         let result = new Object();
 
         for( const attribute in parentPipeline.attributes )
           result[ attribute ] = parentPipeline.attributes[ attribute ]( item )
         
         return result;
-      })
+      }
+
+      const result = payloadChecker.typeChecker( false, parentPipeline.data, 'array' )?
+        parentPipeline.data.map( item => {
+          return mapToAttribute( item );
+        })
+        :
+        mapToAttribute( parentPipeline.data );
+
+      return result;
     };
 
     parentPipeline.id = () => {

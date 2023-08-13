@@ -68,9 +68,23 @@ const GET_RECIPE_MATCH_BY_INGREDIENTS = async ( ingredients = [], number = 5 ) =
   return result;
 }
 
+const GET_RANDOM_RECIPE = async ( number = 10 ) => {
+  const URL = `${ RECIPE_BASE_URL }/random?number=${ number }`;
+  let result = new Object();
+
+  try {
+    result = await fetch( URL ).then( res => res.data );
+  } catch( error ) {
+    console.log(`Unable to execute GET_RANDOM_RECIPE`);
+  }
+
+  return result;
+}
+
 export default{
   GET_RECIPE_INFORMATION,
   GET_RECIPE_MATCH_BY_KEY,
   GET_RECIPE_INSTRUCTION,
-  GET_RECIPE_MATCH_BY_INGREDIENTS
+  GET_RECIPE_MATCH_BY_INGREDIENTS,
+  GET_RANDOM_RECIPE
 }

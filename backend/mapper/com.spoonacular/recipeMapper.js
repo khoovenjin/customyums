@@ -18,6 +18,8 @@ export default class recipeMapper {
 
   static #tags_attributes = [ 'cuisines', 'dishTypes', 'occasions', 'diets' ];
 
+  static normalizeArrayStringCap = ( array ) => array.map( item => String( item ).charAt( 0 ).toUpperCase() + String( item ).slice( 1 ).toLowerCase() );
+
   static createPipeline = ( pipeline ) => {
     if( payloadChecker.typeChecker( false, pipeline.attributes, 'null' ) || payloadChecker.typeChecker( false, pipeline.data, 'null' ) )
       throw new Error('Invalid pipeline data-type. Recommend to call init( data ).');
@@ -50,7 +52,7 @@ export default class recipeMapper {
     parentPipeline.description = () => {
       parentPipeline.attributes.description = ({ summary }) => {
         const removedSpaces = summary.trim();
-        const removedHTMLSyntax = removedSpaces.replace( this.regex_removeHTMLSyntax );
+        const removedHTMLSyntax = removedSpaces.replace( this.regex_removeHTMLSyntax, '' );
         const selectFirstSentence = removedHTMLSyntax.split( '.' ).at( 0 );
 
         return selectFirstSentence;
@@ -67,11 +69,14 @@ export default class recipeMapper {
 
     parentPipeline.tags = () => {
       parentPipeline.attributes.tags = ( item ) => {
-        const tags = new Array();
+        let tags = new Array();
 
         for( const tagElement of this.#tags_attributes ) {
           tags.push( ...item[ tagElement ] );
         }
+
+        // Standardize Array String: e.g: Apple instead of aPPlE
+        tags = this.normalizeArrayStringCap( tags );
 
         return tags;
       }

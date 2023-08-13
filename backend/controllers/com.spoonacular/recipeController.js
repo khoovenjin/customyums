@@ -27,7 +27,9 @@ export default class RecipeController {
     let result = new Array();
 
     try {
-      result = await RecipeClient.fetchRecipeMatchByKey( key );
+      result = await RecipeClient.fetchRecipeMatchByKey( key ).then( async res =>
+        await Promise.all( res.map( async ({ id }) => await RecipeClient.fetchRecipeById_Information( id ) ) )
+      );
     } catch( error ){
       console.log(`Unable to execute apiGetRecipeMatchByKey`);
     }

@@ -30,7 +30,14 @@ export default class RecipeClient {
     let result = new Object();
 
     try {
-      result = await this.fetch( URL ).then( res => res.data );
+      result = await this.fetch( URL )
+        .then( res => recipeMapper.init( res.data )
+                        .id()
+                        .title()
+                        .description()
+                        .image()
+                        .tags()
+                        .get() );
     } catch( error ) {
       console.log(`Unable to execute fetchRecipeById_Information`);
     }
@@ -91,7 +98,7 @@ export default class RecipeClient {
 
     try {
       result = await this.fetch( URL )
-        .then( res => recipeMapper.init( res )
+        .then( res => recipeMapper.init( res.data.recipes )
                         .id()
                         .title()
                         .description()

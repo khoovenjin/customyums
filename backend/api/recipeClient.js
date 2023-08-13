@@ -7,7 +7,7 @@ dotenv.config();
 
 export default class RecipeClient {
   static #apiKey = `apiKey=${ process.env.RECIPE_API_KEY }`;
-  static #limitData = 10;
+  static #limitData = 3;
 
   static getApiKey = () => this.#apiKey;
 

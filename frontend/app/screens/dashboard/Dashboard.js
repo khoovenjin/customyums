@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { Suspense, useRef } from 'react';
 import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
 
 import AppScreen from '../../components/AppScreen';
@@ -9,27 +9,21 @@ import AppSearch from '../../components/AppSearch';
 import AppText from '../../components/AppText';
 import defaultStyles from '../../config/styles';
 
-import { sampleUpcomingMeals } from '../../config/data';
-
-import { useQuery } from '@apollo/client';
-import dietaryApi from '../../api/dietaryApi';
-import Utils from '../../../utilities/utils';
+import useFeaturedRecipe from '../../hooks/useFeaturedRecipe';
+import usePantryRecipe from '../../hooks/usePantryRecipe';
+import useSearchRecipe from '../../hooks/useSearchRecipe';
+import useUpcomingDietary from '../../hooks/useUpcomingDietary';
 
 function Dashboard() {
   const searchRef = useRef();
-
-  const currentDate = Utils.dateToString( Date.now() );
-  console.log( 'current Date: ', currentDate );
-  const { loading, error, data } = useQuery( dietaryApi.GET_DIETARIES, {
-    variables: {
-      query: {
-        isCompleted: false,
-        gte: currentDate,
-        nearest: true
-      }
-    }
-  })
+  const user_id = "64c21f7904f05b8cc0e30746";
+  const noOfFeaturedRecipes = 10;
   
+  const [ deferredRecipes, setSearchQuery ] = useSearchRecipe();
+  const [ dietariesLoading, dietariesError, upcomingDietaries ] = useUpcomingDietary();
+  const pantryRecipes = usePantryRecipe( user_id );
+  const featuredRecipes = useFeaturedRecipe( noOfFeaturedRecipes );
+
   return (
     <AppScreen>
       <View style={ styles.header } >
@@ -38,86 +32,110 @@ function Dashboard() {
       <ScrollView>
         <View style={ styles.container }>
           <AppSearch
-            onChange={ text => console.log( text ) }
+            onChangeText={ text => setSearchQuery( text ) }
             ref={ searchRef }
           />
-          <AppText style={[ defaultStyles.text, styles.title ]}>Upcoming Meals</AppText>
-          { data && <FlatList
-            data={ data?.dietaries }
-            keyExtractor={( item, index ) => index.toString()}
-            renderItem={({ item }) => {
-              if( item?.recipes?.length )
-                return (
-                  <View>
-                    <AppText
-                      style={[ defaultStyles.text, styles.subTitle ]}
-                    >
-                      { item?.meal }
-                    </AppText>
-                    <FlatList
-                      data={ item?.recipes }
-                      keyExtractor={( item, index ) => index.toString()}
-                      renderItem={({ item }) => (
-                        <AppCard
-                          image={{ uri: item.image }}
-                          title={ item.title }
-                          description={ item.description }
-                          tags={ item.tags }
-                          onPress={() => console.log('Press')}
-                          renderRightActions={() => (
-                            <AppDeleteSwipe onPress={() => console.log("delete")}/>
-                          )}
-                        />
-                      )}
-                      ItemSeparatorComponent={() => (
-                        <View style={ styles.seperator }/> 
-                      )}
+          { deferredRecipes.length > 0?
+            (
+              <Suspense fallback={ <AppText>Loading...</AppText> }>
+                <FlatList
+                  data={ deferredRecipes }
+                  keyExtractor={( item, index ) => index.toString()}
+                  renderItem={({ item }) => (
+                    <AppCard
+                      image={{ uri: item.image }}
+                      title={ item.title }
+                      description={ item.description }
+                      tags={ item.tags }
+                      onPress={() => console.log('Press')}
                     />
-                  </View>
-                );
-            }}
-            ItemSeparatorComponent={() => (
-              <View style={ styles.seperator }/> 
-            )}
-          /> }
+                  )}
+                  ItemSeparatorComponent={() => (
+                    <View style={ styles.separator }/> 
+                  )}
+                />
+              </Suspense>
+            )
+            :
+            (
+              <>
+                { upcomingDietaries && <AppText style={[ defaultStyles.text, styles.title ]}>Upcoming Meals</AppText> }
+                { upcomingDietaries && <FlatList
+                  data={ upcomingDietaries?.dietaries }
+                  keyExtractor={( item, index ) => index.toString()}
+                  renderItem={({ item }) => {
+                    if( item?.recipes?.length )
+                      return (
+                        <View>
+                          <AppText
+                            style={[ defaultStyles.text, styles.subTitle ]}
+                          >
+                            { item?.meal }
+                          </AppText>
+                          <FlatList
+                            data={ item?.recipes }
+                            keyExtractor={( item, index ) => index.toString()}
+                            renderItem={({ item }) => (
+                              <AppCard
+                                image={{ uri: item.image }}
+                                title={ item.title }
+                                description={ item.description }
+                                tags={ item.tags }
+                                onPress={() => console.log('Press')}
+                                renderRightActions={() => (
+                                  <AppDeleteSwipe onPress={() => console.log("delete")}/>
+                                )}
+                              />
+                            )}
+                            ItemSeparatorComponent={() => (
+                              <View style={ styles.separator }/> 
+                            )}
+                          />
+                        </View>
+                      );
+                  }}
+                  ItemSeparatorComponent={() => (
+                    <View style={ styles.separator }/> 
+                  )}
+                /> }
 
-          <AppText style={[ defaultStyles.text, styles.title ]}>Pantry Recipes</AppText>
-          <FlatList
-            data={ sampleUpcomingMeals?.at(0)?.meals?.at(1)?.recipe }
-            keyExtractor={( item, index ) => index.toString()}
-            renderItem={({ item }) => (
-              <AppCard
-                image={ item?.image }
-                title={ item?.title }
-                description={ item?.description }
-                tags={ item.tags }
-                onPress={() => console.log("View More")}
-              />
-            )}
-            ItemSeparatorComponent={() => (
-              <View style={ styles.seperator }/> 
-            )}
-          />
+                { pantryRecipes && <AppText style={[ defaultStyles.text, styles.title ]}>Pantry Recipes</AppText> }
+                { pantryRecipes && <FlatList
+                  data={ pantryRecipes }
+                  keyExtractor={( item, index ) => index.toString()}
+                  renderItem={({ item }) => (
+                    <AppCard
+                      image={{ uri: item.image }}
+                      title={ item.title }
+                      onPress={() => console.log("View More")}
+                    />
+                  )}
+                  ItemSeparatorComponent={() => (
+                    <View style={ styles.separator }/> 
+                  )}
+                /> }
 
-          <AppText style={[ defaultStyles.text, styles.title ]}>Featured Recipes</AppText>
-          <FlatList
-            data={ sampleUpcomingMeals?.at(0)?.meals?.at(0)?.recipe }
-            keyExtractor={( item, index ) => index.toString()}
-            renderItem={({ item }) => (
-              <AppCard
-                image={ item?.image }
-                title={ item?.title }
-                description={ item?.description }
-                tags={ item.tags }
-                onPress={() => console.log("View More")}
-              />
-            )}
-            ItemSeparatorComponent={() => (
-              <View style={ styles.seperator }/> 
-            )}
-          />
+                { featuredRecipes && <AppText style={[ defaultStyles.text, styles.title ]}>Featured Recipes</AppText> }
+                { featuredRecipes && <FlatList
+                  data={ featuredRecipes }
+                  keyExtractor={( item, index ) => index.toString()}
+                  renderItem={({ item }) => (
+                    <AppCard
+                      image={{ uri: item.image }}
+                      title={ item.title }
+                      description={ item.description }
+                      tags={ item.tags }
+                      onPress={() => console.log("View More")}
+                    />
+                  )}
+                  ItemSeparatorComponent={() => (
+                    <View style={ styles.separator }/> 
+                  )}
+                /> }
+              </>
+            )
+          }
         </View>
-        
       </ScrollView>
     </AppScreen>
   );
@@ -146,7 +164,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 5
   },
-  seperator: {
+  separator: {
     height: 15
   },
   subTitle: {

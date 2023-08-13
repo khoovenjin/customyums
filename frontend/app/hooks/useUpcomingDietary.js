@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useQuery } from '@apollo/client';
 
 import dietaryApi from '../api/dietaryApi';
-import Utils from '../../utilities/utils';
+import Utils from '../utilities/utils';
 
 export default useUpcomingDietary = () => {
   const currentDate = Utils.dateToString( Date.now() );

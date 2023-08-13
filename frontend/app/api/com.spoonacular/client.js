@@ -1,7 +1,7 @@
 import { RECIPE_BASE_URL } from "@env";
 
 import axios from 'axios';
-import Utils from "../../../utilities/utils";
+import Utils from "../../utilities/utils";
 
 const fetch = async ( url ) => {
   let result;

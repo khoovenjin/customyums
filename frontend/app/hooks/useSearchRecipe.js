@@ -2,7 +2,7 @@ import { useDeferredValue, useEffect, useMemo, useState } from 'react';
 
 import spoonacularApi from '../api/com.spoonacular/client';
 
-import Utils from '../../utilities/utils';
+import Utils from '../utilities/utils';
 
 export default useSearchRecipe = () => {
   const [ searchQuery, setSearchQuery ] = useState( '' );

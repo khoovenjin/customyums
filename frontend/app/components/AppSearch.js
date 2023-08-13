@@ -4,14 +4,14 @@ import { StyleSheet } from 'react-native';
 import AppTextInput from './AppTextInput';
 
 function AppSearch({
-  onChange,
+  onChangeText,
   icon = 'magnify',
   placeholder = 'Search...',
   ...otherProps 
 }, ref ) {
   return (
     <AppTextInput
-      onChangeText={ onChange }
+      onChangeText={ onChangeText }
       icon={ icon }
       placeholder={ placeholder }
       ref={ ref }

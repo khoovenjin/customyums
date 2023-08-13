@@ -6,14 +6,14 @@ import spoonacularApi from '../api/com.spoonacular/client';
 
 export default usePantryRecipe = ( user_id ) => {
   const [ pantryRecipes, setPantryRecipes ] = useState([]);
-  const getQuery = useMemo(() => ({ query: { user_id } }), [ user_id ]);
+  const query = useMemo(() => ({ query: { user_id } }), [ user_id ]);
 
   const {
     loading: pantriesLoading,
     error: pantriesError,
     data: pantries
   } = useQuery( pantryApi.GET_PANTRIES, {
-    variables: getQuery
+    variables: query
   });
 
   const fetchPantryRecipes = async () => {

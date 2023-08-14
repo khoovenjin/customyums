@@ -85,14 +85,14 @@ function Dietary() {
                       />
                     )}
                     ItemSeparatorComponent={() => (
-                      <View style={ styles.seperator }/> 
+                      <View style={ styles.separator }/> 
                     )}
                   />
                 </>
               );
             }}
             ItemSeparatorComponent={() => (
-              <View style={ styles.seperator }/>
+              <View style={ styles.separator }/>
             )}
           />
         </View>
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     zIndex: 1
   },
-  seperator: {
+  separator: {
     height: 10
   }
 })

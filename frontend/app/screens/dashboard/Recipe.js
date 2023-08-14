@@ -91,7 +91,7 @@ function Recipe() {
           </View>
           <AppHorizontal
             data={ nutrientComposition }
-            seperatorWidth={ 10 }
+            separatorWidth={ 10 }
             renderItem={({ item }) => (
               <View style={[ styles.detailsContainer, styles.alignContainer ]}>
                 <AppCircularProgress
@@ -115,7 +115,7 @@ function Recipe() {
                 />
               )}
               ItemSeparatorComponent={() => (
-                <View style={ styles.seperator } />
+                <View style={ styles.separator } />
               )}
             />
             <AppText style={[ defaultStyles.text, styles.text, styles.title ]}>Steps:</AppText>
@@ -131,7 +131,7 @@ function Recipe() {
                 />
               )}
               ItemSeparatorComponent={() => (
-                <View style={ styles.seperator } />
+                <View style={ styles.separator } />
               )}
             />
           </View>
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
-  seperator: {
+  separator: {
     height: 10
   },
   sliderContainer: {

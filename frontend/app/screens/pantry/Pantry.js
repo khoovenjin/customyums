@@ -55,7 +55,7 @@ function Pantry() {
               />
             )}
             ItemSeparatorComponent={() => (
-              <View style={ styles.seperator }/>
+              <View style={ styles.separator }/>
             )}
           />
 
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold'
   },
-  seperator: {
+  separator: {
     height: 10
   },
   title: {

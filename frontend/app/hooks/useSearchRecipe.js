@@ -8,7 +8,7 @@ export default useSearchRecipe = () => {
   const [ searchQuery, setSearchQuery ] = useState( '' );
   const [ searchRecipes, setSearchRecipes ] = useState([]);
   const deferredRecipes = useDeferredValue( searchRecipes );
-  const timeout = 2000; // 2 sec
+  const timeout = 1000; // 1 sec
   const minLength = 3;
 
   const delayDebounce = useMemo(() => {
@@ -20,6 +20,7 @@ export default useSearchRecipe = () => {
       }, timeout );
     }
     
+    setSearchRecipes([]);
     return null;
   }, [ searchQuery ]);
 
@@ -27,7 +28,7 @@ export default useSearchRecipe = () => {
     let timeoutId;
 
     timeoutId = delayDebounce;
-    
+
     if( Utils.typeChecker( true, timeoutId, 'null' ) )
       return () => clearTimeout( timeoutId );
   }, [ searchQuery ]);
